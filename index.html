@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Baby Shower - Aurora Elizabeth</title>
+    
+    <!-- Etiquetas para que el link se vea bonito en WhatsApp (Open Graph) -->
+    <meta property="og:title" content="¡Estás invitado al Baby Shower de Aurora Elizabeth!" />
+    <meta property="og:description" content="Nuestra bebé está en camino. ¡Haz clic para ver la invitación y confirmar tu asistencia!" />
+    <!-- Idealmente aquí pondrías una URL de una imagen tuya, por ahora dejaré un placeholder bonito -->
+    <meta property="og:image" content="https://placehold.co/1200x630/fbcfe8/ec4899?text=Baby+Shower+Aurora" />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling, acts like a video screen */
+            background-color: #0a0a0a;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            touch-action: manipulation;
+        }
+        
+        .font-script {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+        @keyframes float-reverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(-3deg); }
+        }
+        @keyframes hover-ghost {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.02); }
+        }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .animate-float { animation: float 4s ease-in-out infinite; }
+        .animate-float-reverse { animation: float-reverse 5s ease-in-out infinite; }
+        .animate-ghost { animation: hover-ghost 3s ease-in-out infinite; }
+        .animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+
+        /* Reaction Animation */
+        @keyframes pop-up {
+            0% { transform: scale(0.5); opacity: 0; }
+            30% { transform: scale(1.2); opacity: 1; }
+            80% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0; }
+        }
+        .animate-pop-up { animation: pop-up 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+        /* Scene Transitions */
+        #scene-2 {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.7) translateY(50px);
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy pop-in */
+        }
+
+        #scene-1 {
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+        }
+
+        /* 3D Envelope Flap */
+        #top-flap {
+            transform-origin: 200px 50px;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        
+        #envelope-card {
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-bg {
+            background: radial-gradient(circle at center, #fff0f5 0%, #fce7f3 100%);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center h-[100dvh]">
+
+    <!-- ================= SCENE 1: THE ENVELOPE ================= -->
+    <div id="scene-1" class="absolute inset-0 flex flex-col items-center justify-center z-20 w-full max-w-md mx-auto px-6">
+        
+        <div class="text-center mb-10">
+            <h1 class="font-script text-5xl md:text-6xl text-pink-300 drop-shadow-[0_0_10px_rgba(244,114,182,0.4)] mb-2 leading-tight">
+                Estás invitado
+            </h1>
+            <p class="font-bold tracking-[0.3em] text-xs md:text-sm text-gray-300 uppercase">
+                a nuestro baby shower
+            </p>
+        </div>
+
+        <!-- Envelope Graphic (Interactive) -->
+        <div class="w-full max-w-[320px] relative cursor-pointer group" onclick="openInvitation()">
+            <svg viewBox="0 0 400 300" class="w-full h-auto drop-shadow-[0_20px_30px_rgba(236,72,153,0.2)] transition-transform group-hover:scale-105 duration-300">
+                <!-- Back of envelope -->
+                <rect x="20" y="50" width="360" height="230" fill="#fbcfe8" rx="12"/>
+                
+                <!-- Inner Card Preview -->
+                <g id="envelope-card">
+                    <rect x="30" y="30" width="340" height="200" fill="#fff0f5" rx="10"/>
+                    <rect x="40" y="40" width="320" height="180" fill="none" stroke="#f472b6" stroke-width="2" stroke-dasharray="5,5" rx="5"/>
+                    <circle cx="200" cy="110" r="25" fill="#fdf2f8"/>
+                    <path d="M190 105 Q200 120 210 105" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round"/>
+                </g>
+
+                <!-- Envelope Body Flaps -->
+                <path d="M 20 280 L 200 140 L 380 280 Z" fill="#f9a8d4"/>
+                <path d="M 20 50 L 200 180 L 20 280 Z" fill="#f472b6"/>
+                <path d="M 380 50 L 200 180 L 380 280 Z" fill="#f472b6"/>
+
+                <!-- Top Flap (This rotates open) -->
+                <g id="top-flap">
+                    <path d="M 20 50 L 200 180 L 380 50 Z" fill="#ec4899" filter="drop-shadow(0 5px 5px rgba(0,0,0,0.1))"/>
+                    <!-- Black Bow -->
+                    <path d="M 200 180 C 170 150, 160 190, 200 200 C 240 190, 230 150, 200 180 Z" fill="#171717"/>
+                    <path d="M 195 190 L 160 230 L 180 235 Z" fill="#171717"/>
+                    <path d="M 205 190 L 240 230 L 220 235 Z" fill="#171717"/>
+                    <circle cx="200" cy="190" r="6" fill="#f472b6"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="mt-12 text-center animate-pulse-soft text-pink-300 font-bold tracking-[0.2em] text-xs">
+            HAZ CLIC PARA ABRIR
+        </div>
+    </div>
+
+
+    <!-- ================= SCENE 2: THE CARD ================= -->
+    <div id="scene-2" class="absolute inset-0 flex items-center justify-center z-30 w-full h-full p-4 md:p-8">
+        
+        <!-- Main Card Container -->
+        <div class="relative w-full max-w-sm h-full max-h-[850px] card-bg rounded-3xl shadow-[0_0_50px_rgba(236,72,153,0.3)] border-[4px] border-black p-5 flex flex-col items-center justify-between text-center overflow-hidden">
+            
+            <!-- Ornate Inner Border -->
+            <div class="absolute inset-2 border-[2px] border-pink-400 rounded-2xl pointer-events-none opacity-50 border-dashed"></div>
+
+            <!-- Corner Spider Webs (SVGs) -->
+            <svg viewBox="0 0 100 100" class="absolute top-2 left-2 w-16 h-16 text-black opacity-30 pointer-events-none">
+                <path d="M 0 0 L 100 0 L 0 100 Z" fill="rgba(244,114,182,0.2)"/>
+                <path d="M 0 25 Q 25 25 25 0 M 0 50 Q 50 50 50 0 M 0 75 Q 75 75 75 0 M 0 100 Q 100 100 100 0" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" stroke-width="1.5"/><line x1="0" y1="0" x2="38" y2="92" stroke="currentColor" stroke-width="1.5"/><line x1="0" y1="0" x2="92" y2="38" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <svg viewBox="0 0 100 100" class="absolute top-2 right-2 w-16 h-16 text-black opacity-30 pointer-events-none transform scale-x-[-1]">
+                <path d="M 0 0 L 100 0 L 0 100 Z" fill="rgba(244,114,182,0.2)"/>
+                <path d="M 0 25 Q 25 25 25 0 M 0 50 Q 50 50 50 0 M 0 75 Q 75 75 75 0 M 0 100 Q 100 100 100 0" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" stroke-width="1.5"/><line x1="0" y1="0" x2="38" y2="92" stroke="currentColor" stroke-width="1.5"/><line x1="0" y1="0" x2="92" y2="38" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <svg viewBox="0 0 100 100" class="absolute bottom-2 left-2 w-16 h-16 text-black opacity-30 pointer-events-none transform scale-y-[-1]">
+                <path d="M 0 0 L 100 0 L 0 100 Z" fill="rgba(244,114,182,0.2)"/>
+                <path d="M 0 25 Q 25 25 25 0 M 0 50 Q 50 50 50 0 M 0 75 Q 75 75 75 0 M 0 100 Q 100 100 100 0" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <svg viewBox="0 0 100 100" class="absolute bottom-2 right-2 w-16 h-16 text-black opacity-30 pointer-events-none transform rotate-180">
+                <path d="M 0 0 L 100 0 L 0 100 Z" fill="rgba(244,114,182,0.2)"/>
+                <path d="M 0 25 Q 25 25 25 0 M 0 50 Q 50 50 50 0 M 0 75 Q 75 75 75 0 M 0 100 Q 100 100 100 0" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+
+            <!-- Floating Bats -->
+            <div class="absolute top-12 left-10 text-2xl animate-float">🦇</div>
+            <div class="absolute top-24 right-8 text-xl animate-float-reverse">🦇</div>
+            <div class="absolute bottom-32 left-6 text-lg animate-float text-black opacity-80">🦇</div>
+
+            <!-- Header Text -->
+            <div class="z-10 mt-6 flex flex-col items-center">
+                <div class="bg-black text-white px-4 py-1 rounded font-bold tracking-[0.2em] text-xs uppercase shadow-md mb-[-10px] z-20 transform -rotate-2">Nuestra</div>
+                <h2 class="font-script text-6xl text-pink-500 drop-shadow-sm leading-none my-1">bebé</h2>
+                <div class="font-bold tracking-widest text-xs text-black border-b-2 border-black pb-1 mt-1">¡ESTÁ EN CAMINO!</div>
+            </div>
+
+            <!-- Central Graphics (Ghost, Pumpkins, Mug) -->
+            <div class="relative w-full h-44 flex justify-center items-end my-2">
+                <!-- Pink Pumpkin -->
+                <svg viewBox="0 0 100 80" class="absolute left-0 md:left-4 bottom-2 w-24 h-auto drop-shadow-lg animate-float-reverse" style="animation-duration: 6s;">
+                    <path d="M 45 20 Q 50 5 55 5 Q 52 15 55 20 Z" fill="#111"/>
+                    <ellipse cx="25" cy="50" rx="20" ry="25" fill="#fbcfe8" stroke="#f472b6" stroke-width="1.5"/>
+                    <ellipse cx="75" cy="50" rx="20" ry="25" fill="#fbcfe8" stroke="#f472b6" stroke-width="1.5"/>
+                    <ellipse cx="40" cy="50" rx="20" ry="28" fill="#f9a8d4" stroke="#f472b6" stroke-width="1.5"/>
+                    <ellipse cx="60" cy="50" rx="20" ry="28" fill="#f9a8d4" stroke="#f472b6" stroke-width="1.5"/>
+                    <ellipse cx="50" cy="50" rx="20" ry="30" fill="#fdf2f8" stroke="#f472b6" stroke-width="1.5"/>
+                    <path d="M 40 25 L 50 30 L 40 35 Z" fill="#111"/>
+                    <path d="M 60 25 L 50 30 L 60 35 Z" fill="#111"/>
+                    <circle cx="50" cy="30" r="3" fill="#111"/>
+                    <!-- Tiny candle on top -->
+                    <rect x="48" y="10" width="4" height="15" fill="#fff"/>
+                    <path d="M 50 2 C 53 6, 47 8, 50 10 Z" fill="#fbbf24"/>
+                </svg>
+
+                <!-- Center Cute Ghost -->
+                <svg viewBox="0 0 120 160" class="absolute z-10 bottom-0 w-32 h-auto drop-shadow-xl animate-ghost">
+                    <path d="M 10 140 C 10 60, 30 20, 60 20 C 90 20, 110 60, 110 140 C 110 150, 100 160, 90 150 C 80 140, 70 160, 60 150 C 50 140, 40 160, 30 150 C 20 140, 10 150, 10 140 Z" fill="#ffffff" stroke="#fce7f3" stroke-width="2"/>
+                    <circle cx="45" cy="75" r="7" fill="#1a1a1a"/>
+                    <circle cx="75" cy="75" r="7" fill="#1a1a1a"/>
+                    <ellipse cx="30" cy="85" rx="7" ry="4" fill="#fbcfe8" opacity="0.8"/>
+                    <ellipse cx="90" cy="85" rx="7" ry="4" fill="#fbcfe8" opacity="0.8"/>
+                    <path d="M 55 90 Q 60 96 65 90" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 45 10 C 55 20, 60 15, 60 15 C 60 15, 65 20, 75 10 C 85 0, 65 5, 60 10 C 55 5, 35 0, 45 10 Z" fill="#f472b6"/>
+                    <circle cx="60" cy="12" r="5" fill="#db2777"/>
+                    <path d="M 60 125 C 60 125, 40 105, 40 95 C 40 85, 55 85, 60 95 C 65 85, 80 85, 80 95 C 80 105, 60 125, 60 125 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+                    <path d="M 28 100 Q 40 105 45 100" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+                    <path d="M 92 100 Q 80 105 75 100" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+                </svg>
+
+                <!-- Black Pumpkin -->
+                <svg viewBox="0 0 100 80" class="absolute right-12 bottom-0 w-20 h-auto drop-shadow-lg z-20">
+                    <path d="M 45 20 Q 50 5 55 5 Q 52 15 55 20 Z" fill="#4a5568"/>
+                    <ellipse cx="25" cy="50" rx="20" ry="25" fill="#171717" stroke="#2d3748" stroke-width="1.5"/>
+                    <ellipse cx="75" cy="50" rx="20" ry="25" fill="#171717" stroke="#2d3748" stroke-width="1.5"/>
+                    <ellipse cx="40" cy="50" rx="20" ry="28" fill="#262626" stroke="#404040" stroke-width="1.5"/>
+                    <ellipse cx="60" cy="50" rx="20" ry="28" fill="#262626" stroke="#404040" stroke-width="1.5"/>
+                    <ellipse cx="50" cy="50" rx="20" ry="30" fill="#404040" stroke="#525252" stroke-width="1.5"/>
+                    <path d="M 40 25 L 50 30 L 40 35 Z" fill="#f472b6"/>
+                    <path d="M 60 25 L 50 30 L 60 35 Z" fill="#f472b6"/>
+                    <circle cx="50" cy="30" r="3" fill="#f472b6"/>
+                </svg>
+
+                <!-- Mini White Pumpkin -->
+                <svg viewBox="0 0 100 80" class="absolute right-[4.5rem] bottom-0 w-12 h-auto drop-shadow-md z-30">
+                     <ellipse cx="50" cy="50" rx="30" ry="25" fill="#fff" stroke="#fbcfe8" stroke-width="2"/>
+                     <path d="M 48 25 L 50 15 L 52 25 Z" fill="#111"/>
+                     <path d="M 35 45 L 45 45 L 40 50 Z" fill="#111"/>
+                     <path d="M 55 45 L 65 45 L 60 50 Z" fill="#111"/>
+                     <path d="M 40 60 Q 50 70 60 60 L 50 65 Z" fill="#111"/>
+                </svg>
+
+                <!-- Pink Mug -->
+                <svg viewBox="0 0 60 80" class="absolute right-0 bottom-4 w-12 h-auto drop-shadow-md z-0">
+                    <rect x="15" y="30" width="30" height="40" rx="4" fill="#f9a8d4" stroke="#f472b6" stroke-width="1.5"/>
+                    <path d="M 45 40 Q 58 40 58 50 Q 58 60 45 60" fill="none" stroke="#f9a8d4" stroke-width="4"/>
+                    <ellipse cx="30" cy="30" rx="15" ry="5" fill="#9d174d"/>
+                    <line x1="30" y1="30" x2="42" y2="10" stroke="#171717" stroke-width="3" stroke-linecap="round"/>
+                    <!-- Little heart on mug -->
+                    <path d="M 30 55 C 30 55, 23 48, 23 44 C 23 41, 28 41, 30 44 C 32 41, 37 41, 37 44 C 37 48, 30 55, 30 55 Z" fill="#171717"/>
+                </svg>
+            </div>
+
+            <!-- Details Section -->
+            <div class="z-10 w-full flex flex-col items-center mt-2">
+                <p class="font-bold tracking-[0.15em] text-[9px] md:text-[10px] text-gray-700 uppercase bg-white/60 px-3 py-1 rounded shadow-sm">
+                    Únetenos a celebrar el baby shower de
+                </p>
+                
+                <h1 class="font-script text-[42px] md:text-5xl text-pink-600 font-bold mt-2 mb-3 leading-none drop-shadow-sm">
+                    Aurora Elizabeth
+                </h1>
+
+                <!-- Date & Time Box -->
+                <div class="text-center w-full max-w-[280px]">
+                    <div class="font-bold tracking-widest text-xs mb-1 text-gray-800">OCT.</div>
+                    <div class="flex justify-center items-center gap-3 w-full">
+                        <div class="bg-white border-2 border-pink-300 text-black px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-black shadow-sm uppercase flex-1">
+                            Domingo
+                        </div>
+                        <div class="text-5xl md:text-6xl font-black text-black">
+                            4
+                        </div>
+                        <div class="bg-white border-2 border-pink-300 text-black px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-black shadow-sm uppercase flex-1 whitespace-nowrap">
+                            17:00 PM
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dress Code -->
+                <div class="mt-4 border-y-2 border-black py-2 w-[90%] mx-auto">
+                    <p class="font-bold text-[9.5px] md:text-[11px] tracking-wider text-black">
+                        ¡PONTE TU DISFRAZ O ACCESORIOS FAVORITOS!
+                    </p>
+                </div>
+
+                <!-- Reaction Overlay Container (Hidden by default) -->
+                <div id="reaction-container" class="absolute inset-0 flex items-center justify-center z-50 pointer-events-none opacity-0 transition-opacity duration-300 bg-black/20 rounded-3xl backdrop-blur-sm">
+                    <div id="reaction-text" class="text-center drop-shadow-2xl flex flex-col items-center"></div>
+                </div>
+
+                <!-- Location Button -->
+                <a href="https://maps.app.goo.gl/TU_ENLACE_A_MAPS" target="_blank" class="mt-4 bg-pink-400 hover:bg-pink-500 border-[3px] border-black text-black font-black py-2.5 px-6 rounded-full flex items-center justify-center gap-2 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] active:shadow-none active:translate-y-[4px] w-[80%] uppercase text-xs tracking-wider">
+                    <span class="text-lg">📍</span> Payachatas #915
+                </a>
+
+                <!-- RSVP (Confirmación) Buttons -->
+                <div class="w-full mt-4 flex gap-2 justify-center pb-2">
+                    <!-- Botón Asistiré -->
+                    <button onclick="confirmarAsistencia(true)" class="flex-1 bg-green-400 hover:bg-green-500 border-[2px] border-black text-black font-bold py-2 px-1 rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform active:translate-y-1 active:shadow-none text-[10px] uppercase tracking-wide">
+                        ✅ Sí, asistiré
+                    </button>
+                    <!-- Botón No Asistiré -->
+                    <button onclick="confirmarAsistencia(false)" class="flex-1 bg-gray-300 hover:bg-gray-400 border-[2px] border-black text-black font-bold py-2 px-1 rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform active:translate-y-1 active:shadow-none text-[8px] uppercase tracking-wide">
+                        🎁 No, pero te debo el regalito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN DE WHATSAPP
+        // 1. Pon tu número aquí (con el código de país). Para Chile es 569, ej: 56912345678
+        const MI_NUMERO_WHATSAPP = "56900000000"; // <--- ¡CAMBIA ESTE NÚMERO POR EL TUYO!
+
+        function confirmarAsistencia(asistira) {
+            const reactionContainer = document.getElementById('reaction-container');
+            const reactionText = document.getElementById('reaction-text');
+            
+            // Reiniciar animación y mostrar fondo difuminado
+            reactionContainer.classList.remove('opacity-0');
+            reactionText.classList.remove('animate-pop-up');
+            void reactionText.offsetWidth; // Truco técnico para que la animación se pueda repetir
+
+            let mensaje = "";
+            if(asistira) {
+                reactionText.innerHTML = "<div class='text-7xl mb-2'>🥳</div><div class='font-black text-green-500 bg-white px-4 py-2 rounded-xl border-4 border-black text-xl uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'>¡Genial!</div>";
+                reactionText.classList.add('animate-pop-up');
+                mensaje = "¡Hola! 🥳 Confirmo con mucha alegría mi asistencia al Baby Shower de la pequeña Aurora Elizabeth. ¡Nos vemos el Domingo 4!";
+            } else {
+                reactionText.innerHTML = "<div class='text-7xl mb-2'>🥺</div><div class='font-black text-gray-600 bg-white px-4 py-2 rounded-xl border-4 border-black text-lg uppercase tracking-wider shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]'>¡Te extrañaremos!</div>";
+                reactionText.classList.add('animate-pop-up');
+                mensaje = "¡Hola! 😢 Agradezco mucho la invitación al Baby Shower de Aurora. No podré ir, ¡pero te debo el regalito! Que lo pasen hermoso.";
+            }
+            
+            // Esperar a que la animación termine (1.5 segundos) antes de abrir WhatsApp automáticamente
+            setTimeout(() => {
+                reactionContainer.classList.add('opacity-0');
+                const urlWhatsApp = `https://wa.me/${MI_NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+                window.open(urlWhatsApp, '_blank');
+            }, 1500);
+        }
+
+        function openInvitation() {
+            // 1. Animate the envelope flap opening
+            const flap = document.getElementById('top-flap');
+            flap.style.transform = 'rotateX(180deg)';
+            
+            // 2. Slightly move the card out of the envelope
+            const innerCard = document.getElementById('envelope-card');
+            setTimeout(() => {
+                innerCard.style.transform = 'translateY(-40px)';
+            }, 300);
+
+            // 3. Zoom into the full Scene 2
+            setTimeout(() => {
+                const scene1 = document.getElementById('scene-1');
+                const scene2 = document.getElementById('scene-2');
+                
+                // Fade and zoom out scene 1
+                scene1.style.opacity = '0';
+                scene1.style.transform = 'scale(1.2)';
+                scene1.style.pointerEvents = 'none';
+
+                // Pop in scene 2
+                scene2.style.opacity = '1';
+                scene2.style.transform = 'scale(1) translateY(0)';
+                scene2.style.pointerEvents = 'auto';
+            }, 800); // Wait for envelope animations to finish
+        }
+    </script>
+</body>
+</html>
